@@ -4,7 +4,7 @@
 This Task Management Application allows users to efficiently manage their tasks using a drag-and-drop interface. Users can add, edit, delete, and reorder tasks, which are categorized into three sections: **To-Do, In Progress, and Done**. The app ensures real-time updates and data persistence through MongoDB, providing a seamless user experience.
 
 ## Live Demo
-🔗 [Live Application](#)
+🔗 [Live Application](https://task-management-2222.netlify.app/)
 
 ## Features
 ### 1. Authentication
