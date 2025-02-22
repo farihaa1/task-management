@@ -72,11 +72,10 @@ const TaskPage = () => {
       return;
     }
 
-    if(active || over ){
-      if(over.id == active.data.current.column){
-        console.log()
-      }
-      else {
+    if (active || over) {
+      if (over.id == active.data.current.column) {
+        console.log();
+      } else {
         if (active.id === over.id) {
           console.log("Item dropped on itself.");
           return;
@@ -85,19 +84,17 @@ const TaskPage = () => {
     }
 
     // If item is dropped on itself, do nothing (this is for the same item drop)
-   
 
     console.log("active", active, "over", over);
     let destinationColumn = "";
     const sourceColumn = active.data.current.column;
-  console.log(typeof(over.id))
-    if(typeof(over.id)==="string"){
-      destinationColumn = over.id
+    console.log(typeof over.id);
+    if (typeof over.id === "string") {
+      destinationColumn = over.id;
+    } else {
+      destinationColumn = over.data.current.column;
     }
-    else {
-     destinationColumn = over.data.current.column;
-    }
-   console.log("form destination",destinationColumn)
+    console.log("form destination", destinationColumn);
 
     // If the source and destination columns are different, move the task
     if (sourceColumn !== destinationColumn) {
@@ -172,35 +169,40 @@ const TaskPage = () => {
   );
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-    >
-      <div style={{ display: "flex", gap: "20px", padding: "20px" }}>
-        <TaskColumn
-          category="doing"
-          title="Doing"
-          tasks={tasks?.doing || []}
-          selectedTasks={selectedTasks}
-          handleTaskSelection={handleTaskSelection}
-        />
-        <TaskColumn
-          category="progress"
-          title="In Progress"
-          tasks={tasks?.progress || []}
-          selectedTasks={selectedTasks}
-          handleTaskSelection={handleTaskSelection}
-        />
-        <TaskColumn
-          category="done"
-          title="Done"
-          tasks={tasks?.done || []}
-          selectedTasks={selectedTasks}
-          handleTaskSelection={handleTaskSelection}
-        />
+    <div>
+      <div>
+        <h2>Add Task</h2>
       </div>
-    </DndContext>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <div style={{ display: "flex", gap: "20px", padding: "20px" }}>
+          <TaskColumn
+            category="doing"
+            title="Doing"
+            tasks={tasks?.doing || []}
+            selectedTasks={selectedTasks}
+            handleTaskSelection={handleTaskSelection}
+          />
+          <TaskColumn
+            category="progress"
+            title="In Progress"
+            tasks={tasks?.progress || []}
+            selectedTasks={selectedTasks}
+            handleTaskSelection={handleTaskSelection}
+          />
+          <TaskColumn
+            category="done"
+            title="Done"
+            tasks={tasks?.done || []}
+            selectedTasks={selectedTasks}
+            handleTaskSelection={handleTaskSelection}
+          />
+        </div>
+      </DndContext>
+    </div>
   );
 };
 
