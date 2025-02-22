@@ -11,9 +11,13 @@ import {
   useSensors,
   PointerSensor,
   closestCenter,
+  closestCorners,
+  TouchSensor,
+  KeyboardSensor,
 } from "@dnd-kit/core";
 import {
   SortableContext,
+  sortableKeyboardCoordinates,
   useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
@@ -59,6 +63,7 @@ const TaskPage = () => {
 
   // Handle task movement (multi-item drag-and-drop)
   const handleDragEnd = (event) => {
+    console.log(event);
     const { active, over } = event;
 
     // If no column is hovered, do nothing
@@ -67,14 +72,32 @@ const TaskPage = () => {
       return;
     }
 
-    // If item is dropped on itself, do nothing (this is for the same item drop)
-    if (active.id === over.id) {
-      console.log("Item dropped on itself.");
-      return;
+    if(active || over ){
+      if(over.id == active.data.current.column){
+        console.log()
+      }
+      else {
+        if (active.id === over.id) {
+          console.log("Item dropped on itself.");
+          return;
+        }
+      }
     }
 
+    // If item is dropped on itself, do nothing (this is for the same item drop)
+   
+
+    console.log("active", active, "over", over);
+    let destinationColumn = "";
     const sourceColumn = active.data.current.column;
-    const destinationColumn = over.data.current.column;
+  console.log(typeof(over.id))
+    if(typeof(over.id)==="string"){
+      destinationColumn = over.id
+    }
+    else {
+     destinationColumn = over.data.current.column;
+    }
+   console.log("form destination",destinationColumn)
 
     // If the source and destination columns are different, move the task
     if (sourceColumn !== destinationColumn) {
@@ -95,12 +118,12 @@ const TaskPage = () => {
             taskToMove,
           ];
 
-          console.log(taskToMove._id, "id")
+          console.log(taskToMove._id, "id");
           // Update the task in the database
-         const res= axiosPublic.patch(`/tasks/${taskToMove._id}`, {
+          const res = axiosPublic.patch(`/tasks/${taskToMove._id}`, {
             column: destinationColumn, // Moving to a new column
           });
-          console.log(res ,"frm api")
+          console.log(res, "frm api");
 
           return {
             ...prevTasks,
@@ -133,18 +156,20 @@ const TaskPage = () => {
           ...prevTasks,
           [sourceColumn]: sortedTasks,
         }));
-        console.log(taskToMove, "move")
+        console.log(taskToMove, "move");
         // Optionally, update the database (if needed)
         axiosPublic.patch(`/tasks/${taskToMove._id}`, {
-         
           column: sourceColumn, // This remains the same since we are sorting within the same column
         });
       }
     }
   };
 
-  const sensors = useSensors(useSensor(PointerSensor));
-  console.log(tasks, "tasks");
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(TouchSensor),
+    useSensor(KeyboardSensor)
+  );
 
   return (
     <DndContext

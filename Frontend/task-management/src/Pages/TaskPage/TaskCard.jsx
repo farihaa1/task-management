@@ -16,7 +16,7 @@ const TaskCard = ({ index, task, column, selected, handleTaskSelection }) => {
       style={{
         padding: "10px",
         margin: "5px 0",
-        backgroundColor: selected ? "#f39c12" : "#3498db",
+        backgroundColor: selected ? "#f39c12" : "#3498f6",
         color: "white",
         borderRadius: "5px",
         cursor: "grab",
